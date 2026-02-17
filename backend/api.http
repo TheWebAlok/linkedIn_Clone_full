@@ -1,0 +1,121 @@
+### Register User
+
+POST http://localhost:9090/users/register
+Content-Type: application/json
+
+{
+  "username": "alok56",
+  "password": "12356",
+  "email": "alokkk@example.com",
+  "name": "Alok Kumar"
+}
+
+###
+
+### Login User
+POST http://localhost:9090/users/login
+Content-Type: application/json
+
+{
+  "email": "alokkk@example.com",
+  "password": "12356"
+}
+
+###
+### Update Profile Picture
+GET http://localhost:9090
+Content-Type: application/json
+
+
+
+
+
+### Update Profile Picture
+POST http://localhost:9090/users/update_profile_picture
+Content-Type: application/json
+
+{
+  "token": "ad113b34cf2d545c0287e2888479e0c0ab16eb230c243f16ec3f995ec43d5f89",
+  "profilePicture": "alok_new.jpg"
+}
+
+###
+
+GET http://localhost:9090/users/get_user_and_profile
+Content-Type: application/json
+
+{
+  "token": "ad113b34cf2d545c0287e2888479e0c0ab16eb230c243f16ec3f995ec43d5f89"
+}
+
+###
+GET http://localhost:9090/users/get_user_and_profile?token=ad113b34cf2d545c0287e2888479e0c0ab16eb230c243f16ec3f995ec43d5f89
+
+
+###
+
+### Update Profile Data
+PUT http://localhost:9090/users/update_profile_data
+Content-Type: application/json
+
+{
+  "token": "ef2f57b55c1bb24c5d0a95100dd9fd7f44aa46f6000ca90138ece035f86c0744",
+  "bio": "Hii, i'm Alok. Full stack developer with 2 years experience",
+  "currentPost": "Working at XYZ Company",
+  "postWork": [
+    {
+      "company": "XYZ Corp",
+      "position": "Frontend Developer",
+      "years": "2"
+    },
+    {
+      "company": "ABC Ltd",
+      "position": "Backend Developer",
+      "years": "1"
+    }
+  ],
+  "education": [
+    {
+      "school": "ABC University",
+      "degree": "MCA",
+      "_id": "68faaaf56cb1f8115273ecf1"
+    }
+  ]
+}
+
+###
+
+### Get All Users
+GET http://localhost:9090/users/user/get_all_users
+Content-Type: application/json
+
+
+### Post
+POST  http://localhost:9090/posts/post
+Content-Type: multipart/form-data
+
+{
+  "token": "ad113b34cf2d545c0287e2888479e0c0ab16eb230c243f16ec3f995ec43d5f89",
+  "body": "Hello this is my first post"
+}
+
+### Post
+
+POST http://localhost:9090/posts/post
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryABC123
+
+------WebKitFormBoundaryABC123
+Content-Disposition: form-data; name="token"
+
+ad113b34cf2d545c0287e2888479e0c0ab16eb230c243f16ec3f995ec43d5f89
+------WebKitFormBoundaryABC123
+Content-Disposition: form-data; name="body"
+
+Hello this is my first post
+------WebKitFormBoundaryABC123
+Content-Disposition: form-data; name="media"; filename="test.jpg"
+Content-Type: image/jpeg
+
+
+### Get All Posts
+GET http://localhost:9090/posts/posts

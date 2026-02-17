@@ -1,0 +1,14 @@
+# Node modules
+frontend/node_modules/
+backend/node_modules/
+
+# Environment files
+backend/.env
+
+# Optional but Recommended
+node_modules/
+.env
+.history/
+.vscode/
+dist/
+build/

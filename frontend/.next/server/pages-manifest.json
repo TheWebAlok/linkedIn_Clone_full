@@ -1,0 +1,15 @@
+{
+  "/api/hello": "pages/api/hello.js",
+  "/blog": "pages/blog.html",
+  "/_error": "pages/_error.js",
+  "/discover": "pages/discover.html",
+  "/_app": "pages/_app.js",
+  "/_document": "pages/_document.js",
+  "/": "pages/index.html",
+  "/login": "pages/login.html",
+  "/my-connections": "pages/my-connections.html",
+  "/dashboard": "pages/dashboard.html",
+  "/profile": "pages/profile.html",
+  "/view_profile/[username]": "pages/view_profile/[username].js",
+  "/404": "pages/404.html"
+}
