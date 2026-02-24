@@ -24,7 +24,7 @@ export default function ProfilePage() {
     const { name, value } = e.target
     setInputData({ ...inputData, [name]: value })
   }
-const [modalType, setModalType] = useState(null);
+  const [modalType, setModalType] = useState(null);
 
   const [isModelOpen, setIsModelOpen] = useState(false)
   const [userProfile, setUserProfile] = useState({
@@ -220,21 +220,33 @@ const [modalType, setModalType] = useState(null);
               </div>
             </div>
 
-
             <div className={styles.workHistory}>
               <h4>Education</h4>
+
               <div className={styles.workHistoryContainer}>
-                {userProfile?.education?.map((education, index) => (
-                  <div key={index} className={styles.workHistoryCard}>
-                    <p style={{ fontWeight: "bold" }}>
-                      {education.school}
-                    </p>
-                    <p>{education.degree}</p>
-                  </div>
-                ))}
 
+                {/* -------- EDUCATION LIST -------- */}
+                {Array.isArray(userProfile?.education) &&
+                  userProfile.education
+                    .filter(
+                      (edu) => edu?.school || edu?.degree
+                    )
+                    .map((education, index) => (
+                      <div
+                        key={index}
+                        className={styles.workHistoryCard}
+                      >
+                        <p style={{ fontWeight: "bold" }}>
+                          {education?.school || "N/A"}
+                        </p>
 
+                        <p>
+                          {education?.degree || "N/A"}
+                        </p>
+                      </div>
+                    ))}
 
+                {/* -------- ADD BUTTON -------- */}
                 <button
                   className={styles.addWorkBtn}
                   onClick={() => setModalType("education")}
