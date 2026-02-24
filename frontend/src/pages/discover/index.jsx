@@ -1,4 +1,4 @@
-import { getAllUsers } from '@/config/redux/action/authAction';   // ✅ correct import
+import { getAllUsers } from '@/config/redux/action/authAction';
 import DashboardLayout from '@/layout/DashboardLayout';
 import UserLayout from '@/layout/UserLayout';
 import React, { useEffect } from 'react';

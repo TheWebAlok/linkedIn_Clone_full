@@ -1,7 +1,7 @@
 import { useRouter } from "next/router"
 import styles from "./styles.module.css"
 import { useDispatch, useSelector } from "react-redux";
-import { reset } from "@/config/redux/reducer/authReducer";   // ✅ ADD THIS
+import { reset } from "@/config/redux/reducer/authReducer";
 
 export default function NavbarComponent() {
 
@@ -27,7 +27,7 @@ export default function NavbarComponent() {
               <p
                 onClick={() => {
                   localStorage.removeItem("token")
-                  dispatch(reset())          //  now works
+                  dispatch(reset())
                   router.push("/login")
                 }}
                 style={{ fontWeight: "bold", cursor: "pointer" }}
