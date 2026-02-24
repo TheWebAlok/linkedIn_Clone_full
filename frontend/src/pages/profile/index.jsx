@@ -345,8 +345,15 @@ export default function ProfilePage() {
                 onClick={() => {
                   setUserProfile({
                     ...userProfile,
-                    education: [...userProfile.education, inputData],
+                    education: [
+                      ...(userProfile.education || []),
+                      {
+                        school: inputData.school,
+                        degree: inputData.degree,
+                      },
+                    ],
                   });
+
                   setModalType(null);
                 }}
                 className={styles.updateBtn}
