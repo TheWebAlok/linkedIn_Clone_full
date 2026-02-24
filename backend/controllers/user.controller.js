@@ -13,7 +13,6 @@ import path from "path";
 // Helper: Convert Profile to PDF
 // ----------------------
 
-
 const convertUserDataToPDF = async (userData) => {
   console.log("PROFILE PIC:", userData.userId.profilePicture);
 
@@ -33,8 +32,10 @@ const convertUserDataToPDF = async (userData) => {
 
   if (userData.userId.profilePicture) {
     // Remove extra "uploads/" if already stored
-    const cleanedPath =
-      userData.userId.profilePicture.replace(/^uploads[\\/]/, "");
+    const cleanedPath = userData.userId.profilePicture.replace(
+      /^uploads[\\/]/,
+      "",
+    );
 
     // Absolute path build
     imagePath = path.join(process.cwd(), "uploads", cleanedPath);
@@ -43,7 +44,7 @@ const convertUserDataToPDF = async (userData) => {
   if (imagePath && fs.existsSync(imagePath)) {
     doc.image(imagePath, {
       width: 200,
-      height:200,
+      height: 200,
       align: "center",
     });
 
@@ -90,7 +91,7 @@ const convertUserDataToPDF = async (userData) => {
 // ----------------------
 // const convertUserDataToPDF = async (userData) => {
 //   console.log("PROFILE PIC:", userData.userId.profilePicture);
-  
+
 //   if (!fs.existsSync("uploads")) {
 //     fs.mkdirSync("uploads");
 //   }
@@ -182,10 +183,17 @@ export const login = async (req, res) => {
     if (!isMatch)
       return res.status(400).json({ message: "Invalid credentials" });
 
+    // const token = crypto.randomBytes(32).toString("hex");
+    // await User.updateOne({ _id: user._id }, { token });
+    // user.controller.js
     const token = crypto.randomBytes(32).toString("hex");
-    await User.updateOne({ _id: user._id }, { token });
+    await User.updateOne({ _id: user._id }, { $set: { token: token } }); // $set safe rehta hai
 
-    return res.json({ token: token });
+    return res.json({
+      token: token,
+      user: { id: user._id, username: user.username },
+    });
+    // return res.json({ token: token });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -262,22 +270,26 @@ export const updateUserProfile = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-
-// ----------------------
-// GET USER + PROFILE
-// ----------------------
 export const getUserAndProfile = async (req, res) => {
   try {
     const { token } = req.query;
-    console.log(`token:${token}`);
+    if (!token) return res.status(400).json({ message: "Token missing" });
 
-    const user = await User.findOne({ token });
-    if (!user) return res.status(404).json({ message: "User not found" });
+    // Trim karein taaki koi extra space issue na kare
+    const cleanToken = token.trim();
+    
+    // User ko find karein
+    const user = await User.findOne({ token: cleanToken });
 
-    const profile = await Profile.findOne({ userId: user._id })
-      .populate("userId", "name email username profilePicture")
-      .lean();
+    if (!user) {
+      // DEBUG: Yahan check karein ki DB mein kya koi bhi user hai is token ke saath?
+      return res.status(404).json({ 
+        message: "User not found. Please log in again.",
+        receivedToken: cleanToken 
+      });
+    }
 
+    const profile = await Profile.findOne({ userId: user._id }).populate("userId");
     return res.json({ user, profile });
   } catch (error) {
     return res.status(500).json({ message: error.message });
