@@ -226,25 +226,18 @@ export default function ProfilePage() {
               <div className={styles.workHistoryContainer}>
 
                 {/* -------- EDUCATION LIST -------- */}
-                {Array.isArray(userProfile?.education) &&
-                  userProfile.education
-                    .filter(
-                      (edu) => edu?.school || edu?.degree
-                    )
-                    .map((education, index) => (
-                      <div
-                        key={index}
-                        className={styles.workHistoryCard}
-                      >
-                        <p style={{ fontWeight: "bold" }}>
-                          {education?.school || "N/A"}
-                        </p>
-
-                        <p>
-                          {education?.degree || "N/A"}
-                        </p>
-                      </div>
-                    ))}
+                {userProfile?.education
+                  ?.filter(edu => edu?.school || edu?.degree)
+                  .map((education, index) => (
+                    <div key={index} className={styles.workHistoryCard}>
+                      <p style={{ fontWeight: "bold" }}>
+                        {education.school}
+                      </p>
+                      <p>
+                        {education.degree}
+                      </p>
+                    </div>
+                  ))}
 
                 {/* -------- ADD BUTTON -------- */}
                 <button

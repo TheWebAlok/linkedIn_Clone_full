@@ -90,9 +90,13 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.isError = false;
         state.profileFetched = true;
-        state.user = action.payload.profile;
-      })
 
+        // Merge login user + profile
+        state.user = {
+          ...state.user,
+          ...action.payload.profile,
+        };
+      })
       // GET ALL USERS
       .addCase(getAllUsers.pending, (state) => {
         state.isLoading = true;

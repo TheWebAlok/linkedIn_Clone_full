@@ -48,23 +48,25 @@ export const registerUser = createAsyncThunk(
     }
   },
 );
-
 export const getAboutUser = createAsyncThunk(
   "user/getAboutUser",
-  async (user, thunkAPI) => {
+  async (_, thunkAPI) => {
+    // user parameter ki jagah seedha storage use karein
     try {
-      console.log("Calling API with token:", user.token);
+      // LocalStorage se naya token nikalein
+      const token = localStorage.getItem("token");
+
+      console.log("Fetching data for token:", token);
+
+      if (!token) return thunkAPI.rejectWithValue("No token found");
 
       const response = await clientServer.get("/users/get_user_and_profile", {
-        params: { token: user.token },
+        params: { token: token },
       });
-
-      console.log("API response:", response.data);
 
       return thunkAPI.fulfillWithValue(response.data);
     } catch (err) {
-      console.error("API error:", err);
-
+      console.error("API error details:", err.response?.data);
       return thunkAPI.rejectWithValue(
         err.response?.data || { message: "Error" },
       );
@@ -149,8 +151,8 @@ export const getMyConnectionRequests = createAsyncThunk(
           params: { token: user.token },
         },
       );
-      
-      return thunkAPI.fulfillWithValue( response.data);
+
+      return thunkAPI.fulfillWithValue(response.data);
     } catch (err) {
       return thunkAPI.rejectWithValue(
         err.response?.data || { message: "Error fetching requests" },
@@ -169,16 +171,15 @@ export const acceptConnectionRequest = createAsyncThunk(
           token: user.token,
           requestId: user.connectionId,
           action_type: user.action,
-        }
+        },
       );
-      thunkAPI.dispatch(getConnectionRequest({token: user.token}))
-      thunkAPI.dispatch(getMyConnectionRequests({token: user.token}))
+      thunkAPI.dispatch(getConnectionRequest({ token: user.token }));
+      thunkAPI.dispatch(getMyConnectionRequests({ token: user.token }));
       return thunkAPI.fulfillWithValue(response.data);
     } catch (err) {
       return thunkAPI.rejectWithValue(
-        err.response?.data || { message: "Error accepting request" }
+        err.response?.data || { message: "Error accepting request" },
       );
     }
-  }
+  },
 );
-
